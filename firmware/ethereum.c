@@ -200,7 +200,11 @@ static void send_signature(void)
 
 	msg_tx_request.has_signature_v = true;
 	if (chain_id) {
-		msg_tx_request.signature_v = (uint64_t)v + 2 * chain_id + 35;
+		if (chain_id > 255) {
+			msg_tx_request.signature_v = v;
+		} else {
+			msg_tx_request.signature_v = v + 2 * chain_id + 35;
+		}
 	} else {
 		msg_tx_request.signature_v = v + 27;
 	}
